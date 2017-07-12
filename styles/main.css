@@ -10,7 +10,7 @@
  
  body {
      font-family: 'Open Sans'; /* sets our font to the "Open Sans" typeface */
-     color: white;             /* sets the text color to white */
+     color: white;             /* sets the text color to white*/ 
      min-height: 100%;         /* says the height of the body must be, at minimum, 100% of the window */
  }
    .navbar {
@@ -57,6 +57,9 @@
   .container {
      margin: 0 auto;
      max-width: 64rem; /*this allows me to give any container a max width for big screens where the container would otherwise try to stretch itself to adjust to the device's width*/
+ }
+ .container.narrow {
+  max-width: 56rem;
  }
  
  /*MEDIA QUERIES*/

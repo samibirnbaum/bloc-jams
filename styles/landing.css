@@ -41,9 +41,9 @@
      
      /*when this elements state changes, transition below causes*/
      /*this to happen gradually*/
-     -webkit-transition: all 3.25s ease-in-out;
-     -moz-transition: all 3.25s ease-in-out;
-     transition: all 3.25s ease-in-out;
+     -webkit-transition: all 1s ease-in-out;
+     -moz-transition: all 1s ease-in-out;
+     transition: all 1s ease-in-out;
      -webkit-transition-delay: 0.2s;
      -moz-transition-delay: 0.2s;
      transition-delay: 0.2s;

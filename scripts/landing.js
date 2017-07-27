@@ -1,16 +1,17 @@
 var pointsArray = document.getElementsByClassName("point");
 
+// this sits as a global revealpoint function ready to change the style
+// of an element (a cell in a NodeList)
+var revealPoint = function(point) {
+    point.style.opacity=1;
+    point.style.transform="ScaleX(1) translateY(0)";
+    point.style.msTransform = "scaleX(1) translateY(0)";
+    point.style.WebkitTransform = "scaleX(1) translateY(0)";
+};
+
+// this isolates each cell in a NodeList applying a specified function to each    
 var animatePoints = function (points){
-    
-    var revealPoint = function(index) {
-        points[index].style.opacity=1;
-        points[index].style.transform="ScaleX(1) translateY(0)";
-        points[index].style.msTransform = "scaleX(1) translateY(0)";
-        points[index].style.WebkitTransform = "scaleX(1) translateY(0)";
-    };
-    for(var i=0; i<points.length; i++){
-        revealPoint(i);
-    }
+    forEach(points, revealPoint);
 };
 
 window.onload = function () {

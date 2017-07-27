@@ -1,6 +1,6 @@
-var points = document.getElementsByClassName("point");
+var pointsArray = document.getElementsByClassName("point");
 
-var animatePoints = function (){
+var animatePoints = function (points){
     
     var revealPoint = function(index) {
         points[index].style.opacity=1;
@@ -16,14 +16,14 @@ var animatePoints = function (){
 window.onload = function () {
     // if window is big enough to display top of selling points container = NO SCROLL EVENT REQUIRED    
     if (window.innerHeight > 950) {
-        animatePoints();
+        animatePoints(pointsArray);
      }
     //  if window doesn't display top of selling points container = YES SCROLL EVENT REQUIRED
     var sellingPoints = document.getElementsByClassName("selling-points")[0];
     var scrollDistance = sellingPoints.getBoundingClientRect().top - window.innerHeight + 200;
     window.addEventListener("scroll",function(event){
          if(document.documentElement.scrollTop || document.body.scrollTop >= scrollDistance){
-             animatePoints();
+             animatePoints(pointsArray);
          }
     });
 };

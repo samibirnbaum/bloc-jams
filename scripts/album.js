@@ -67,6 +67,24 @@ var setCurrentAlbum = function (album) {
     }
 };
 
+// CREATE THE PLAY BUTTON ON THE SONG ROW WHEN HOVER
+// access to parent element for event delegation
+var songListContainer = document.getElementsByClassName("album-view-song-list")[0];
+
+// html to show play button in first table cell (as the plain play button that it is )
+var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+
 window.onload = function() {
+    // on load set the album
     setCurrentAlbum(albumPicasso);
+    
+    // on load enable play button feature
+    songListContainer.addEventListener("mouseover", function(event) {
+        // if the cell i'm targeting has a song row parent element
+        if (event.target.parentElement.className === "album-view-song-item") {
+            // change that rows 1st cell to play button
+            event.target.parentElement.querySelector(".song-item-number").innerHTML = playButtonTemplate;
+        }
+    });
 };
+

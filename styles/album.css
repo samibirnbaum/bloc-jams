@@ -11,6 +11,9 @@ body.album {
     margin-top: 1rem;
     width: 60%;
 }
+.album-cover-art:hover {
+    cursor: pointer;
+}
 .album-view-details {
     position: relative;
     top: 1.5rem; 

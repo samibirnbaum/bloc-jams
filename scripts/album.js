@@ -34,7 +34,7 @@ var albumMarconi = {
 var createSongRow = function (songNumber, songName, songLength) {
     var template = 
          '<tr class="album-view-song-item">'
-        +    '<td class="song-item-number">'+songNumber+'</td>'
+        +    '<td class="song-item-number" data-song-number="'+songNumber+'">'+songNumber+'</td>'
         +    '<td class="song-item-title">'+songName+'</td>'
         +    '<td class="song-item-duration">'+songLength+'</td'
         +'</tr>'
@@ -67,9 +67,11 @@ var setCurrentAlbum = function (album) {
     }
 };
 
-// CREATE THE PLAY BUTTON ON THE SONG ROW WHEN HOVER
+// CREATE THE PLAY BUTTON ON THE SONG ROW WHEN HOVER AND REMOVE WHEN LEAVE
 // access to parent element for event delegation
 var songListContainer = document.getElementsByClassName("album-view-song-list")[0];
+// access to the row element for mouseleave event
+var songRows = document.getElementsByClassName("album-view-song-item"); //returns nodelist
 
 // html to show play button in first table cell (as the plain play button that it is )
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
@@ -86,5 +88,14 @@ window.onload = function() {
             event.target.parentElement.querySelector(".song-item-number").innerHTML = playButtonTemplate;
         }
     });
+    
+    // enable play button removal feature
+    //add EL to every row in nodelist
+    for (var i=0; i<songRows.length; i++){
+        songRows[i].addEventListener("mouseleave", function (event) {
+            //when mouseleaves the row change html abck to data-song-number string
+            this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+        });
+    }
 };
 

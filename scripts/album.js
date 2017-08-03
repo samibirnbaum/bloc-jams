@@ -91,17 +91,17 @@ window.onload = function() {
 };
 
 // album cover when clicked switches between 3 albums
-//My Attempt
-var albumPic = document.getElementsByClassName("album-cover-art")[0]
+// My Attempt
+var albumPic = document.getElementsByClassName("album-cover-art")[0];
 albumPic.addEventListener("click", function(event) {
-    if (albumPic.getAttribute("src") == albumGreenDay.albumArtUrl || albumPic.getAttribute("src") == albumPicasso.albumArtUrl ) {
+    if (albumPic.getAttribute("src") == albumGreenDay.albumArtUrl) {
         setCurrentAlbum(albumMarconi);
     }
-    else if (albumPic.getAttribute("src") == albumMarconi.albumArtUrl || albumPic.getAttribute("src") == albumGreenDay.albumArtUrl ) {
+    else if (albumPic.getAttribute("src") == albumMarconi.albumArtUrl) {
         setCurrentAlbum(albumPicasso);
     }
-    // my code never reaches this statment
-    else if (albumPic.getAttribute("src") == albumMarconi.albumArtUrl || albumPic.getAttribute("src") == albumPicasso.albumArtUrl ) {
+    
+    else if (albumPic.getAttribute("src") == albumPicasso.albumArtUrl ) {
         setCurrentAlbum(albumGreenDay);
     }
 });

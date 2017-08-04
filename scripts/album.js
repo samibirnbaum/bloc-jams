@@ -67,20 +67,56 @@ var setCurrentAlbum = function (album) {
     }
 };
 
-// CREATE THE PLAY BUTTON ON THE SONG ROW WHEN HOVER AND REMOVE WHEN LEAVE
-// access to parent element for event delegation
+
+
+
+// PLAY AND PAUSE BUTTON FEATURE
+// *****************************
+
+// *SELECTORS + UTILITIES*
+// selectors for pause button feature
+var findParentByClassName = function () {
+    
+};
+
+var getSongItem = function () {
+    
+};
+
+// function for the pause feature
+// when i click on a song only these 3 scenarios exist - which all need separate instructions
+var clickHandler = function (targetElement) {
+    // if no other song is playing
+        // then simply change this play button i have clicked to pause button (playing the song)
+        
+    // if the song i have clicked is already playing
+        //change the pause button back to a play button (essentially pausing the song)
+        
+    // if another song is playing
+        //change song i have clicked on to pause (making it play)
+        //return the other song back to its song number (stopping it)
+};
+
+
+// selectors for play button feature
 var songListContainer = document.getElementsByClassName("album-view-song-list")[0];
-// access to the row element for mouseleave event
 var songRows = document.getElementsByClassName("album-view-song-item"); //returns nodelist
 
-// html to show play button in first table cell (as the plain play button that it is )
+// html inserts to display buttons
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
+var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
 
+var currentPlayingSong = null;
+
+
+
+
+// *ACTIONS*
 window.onload = function() {
     // on load set the album
     setCurrentAlbum(albumPicasso);
     
-    // on load enable play button feature
+    // on load HOVER enable play button feature
     songListContainer.addEventListener("mouseover", function(event) {
         // if the cell i'm targeting has a song row parent element
         if (event.target.parentElement.className === "album-view-song-item") {
@@ -90,11 +126,16 @@ window.onload = function() {
     });
     
     // enable play button removal feature
-    //add EL to every row in nodelist
     for (var i=0; i<songRows.length; i++){
         songRows[i].addEventListener("mouseleave", function (event) {
-            //when mouseleaves the row change html abck to data-song-number string
+            //when mouseleaves the row change html back to data-song-number string
             this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+        });
+        
+        
+        // deal with clicks for pause feature
+        songRows[i].addEventListener("click", function (event) {
+            //code in here will handle the click on the song rows
         });
     }
 };

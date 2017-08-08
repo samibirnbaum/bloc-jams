@@ -75,26 +75,60 @@ var setCurrentAlbum = function (album) {
 
 // *SELECTORS + UTILITIES*
 // selectors for pause button feature
-var findParentByClassName = function () {
-    
+
+//making sure you find the parent in that branch
+var findParentByClassName = function (element, targetClass) {
+    if (element){
+        var currentParentElement = element.parentElement;
+        while(currentParentElement.className !== targetClass && currentParentElement.className !== null) {
+            currentParentElement = currentParentElement.parentElement;
+        }
+        return currentParentElement
+    }
 };
 
-var getSongItem = function () {
-    
+//getting the song item in that branch whose HTML you will change
+var getSongItem = function (element) {
+    switch(element.className){
+        case"album-song-button":
+        case"ion-play":
+        case"ion-pause":
+            return findParentByClassName(element, "song-item-number");
+        case"album-view-song-item":
+            return element.querySelector(".song-item-number");
+        case"song-item-title":
+        case"song-item-duration":
+            return findParentByClassName(element, "album-view-song-item").querySelector(".song-item-number");
+        case"song-item-number":
+            return element;
+        default:
+            return;
+    }
 };
 
-// function for the pause feature
-// when i click on a song only these 3 scenarios exist - which all need separate instructions
+// function for the pause feature - takes in clicked element
 var clickHandler = function (targetElement) {
-    // if no other song is playing
-        // then simply change this play button i have clicked to pause button (playing the song)
-        
-    // if the song i have clicked is already playing
-        //change the pause button back to a play button (essentially pausing the song)
-        
-    // if another song is playing
-        //change song i have clicked on to pause (making it play)
-        //return the other song back to its song number (stopping it)
+    
+    //wherever i click get me the song-number html i need to change
+    var songItem = getSongItem(targetElement);
+    
+    // 3 possible scenarios
+    if(currentPlayingSong === null) {
+        songItem.innerHTML = pauseButtonTemplate;
+        currentPlayingSong = songItem.getAttribute("data-song-number");
+    }
+    else if (songItem.getAttribute("data-song-number") === currentPlayingSong) {
+        songItem.innerHTML = playButtonTemplate;
+        currentPlayingSong = null; //because you have paused the song, so nothing is playing
+    }
+    else if(songItem.getAttribute("data-song-number") !== currentPlayingSong) {
+        //get access to current playing songs element - change back to its number
+        var currentPlayingSongElement = document.querySelector('[data-song-number="'+currentPlayingSong+'"]');
+        currentPlayingSongElement.innerHTML = currentPlayingSongElement.getAttribute("data-song-number");
+        //change clicked on song to pause button
+        songItem.innerHTML = pauseButtonTemplate;
+        currentPlayingSong = songItem.getAttribute("data-song-number");
+    }
 };
 
 
@@ -116,26 +150,32 @@ window.onload = function() {
     // on load set the album
     setCurrentAlbum(albumPicasso);
     
-    // on load HOVER enable play button feature
+    //enable play/pause button feature
     songListContainer.addEventListener("mouseover", function(event) {
-        // if the cell i'm targeting has a song row parent element
-        if (event.target.parentElement.className === "album-view-song-item") {
+        var songItem = getSongItem(event.target);
+        // if song not already playing
+        if (event.target.parentElement.className === "album-view-song-item" && songItem.innerHTML !== pauseButtonTemplate) {
             // change that rows 1st cell to play button
-            event.target.parentElement.querySelector(".song-item-number").innerHTML = playButtonTemplate;
+            songItem.innerHTML = playButtonTemplate;
         }
     });
     
-    // enable play button removal feature
+    // remove play/pause button feature
     for (var i=0; i<songRows.length; i++){
         songRows[i].addEventListener("mouseleave", function (event) {
-            //when mouseleaves the row change html back to data-song-number string
-            this.children[0].innerHTML = this.children[0].getAttribute('data-song-number');
+            var songItem = getSongItem(event.target);
+            var songItemNumber = songItem.getAttribute('data-song-number');
+            //as long as the song is not currently playing
+            if(songItem.innerHTML !== pauseButtonTemplate){
+                // change back to its number
+                songItem.innerHTML = songItemNumber;
+            }
         });
         
         
         // deal with clicks for pause feature
         songRows[i].addEventListener("click", function (event) {
-            //code in here will handle the click on the song rows
+            clickHandler(event.target);
         });
     }
 };

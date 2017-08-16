@@ -65,7 +65,7 @@
  /*MEDIA QUERIES*/
  
  /*medium and small screens*/
- @media (min-width: 640px){
+ @media (min-width: 640px){    /*from 640px and upwards*/
   
   html {font-size: 112%}
   

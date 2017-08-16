@@ -7,7 +7,8 @@
         <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" type="text/css" >
         <link rel="stylesheet" href="styles/normalize.css" type="text/css" >
         <link rel="stylesheet" href="styles/main.css" type="text/css" >
-        <link rel="stylesheet" href="styles/album.css" type="text/css" />
+        <link rel="stylesheet" href="styles/album.css" type="text/css" >
+        <link rel="stylesheet" href="styles/player_bar.css" type="text/css" >
     </head>
     <body class="album">
         <nav class="navbar">
@@ -34,6 +35,44 @@
                <!--the rows will be inserted through JS-->
             </table>
         </main>
+        
+        <!--Music Player Bar-->
+        
+        <section class="player-bar">
+            <div class="container"> <!--this centers this div with a max width from main.css-->
+                <div class="control-group main-controls">
+                    <a class="previous">
+                        <span class="ion-skip-backward"></span>
+                    </a>
+                    <a class="play-pause">
+                        <span class="ion-play"></span>
+                    </a>
+                    <a class="next">
+                        <span class="ion-skip-forward"></span>
+                    </a>
+                </div>
+                <div class="control-group currently-playing">
+                    <h2 class="song-name">My dumb song</h2>
+                    <div class="seek-control">
+                        <div class="seek-bar">
+                            <div class="fill"></div> <!--the line that fills as the song plays-->
+                            <div class="thumb"></div> <!--the end of that line-->
+                        </div>
+                        <div class="current-time">2:30</div>
+                        <div class="total-time">4:45</div>
+                    </div>
+                    <h2 class="artist-song-mobile">My dumb song - Fallout Boy</h2> <!--to be used in RWD-->
+                    <h3 class="artist-name">Fallout Boy</h3>
+                </div>
+                <div class="control-group volume">
+                    <span class="ion-volume-high icon"></span>
+                    <div class="seek-bar">
+                        <div class="fill"></div> <!--the line that fills as the song plays-->
+                        <div class="thumb"></div> <!--the end of that line-->
+                    </div>    
+                </div>
+            </div>    
+        </section>
         <script src="scripts/album.js"></script>
     </body>
 </html>

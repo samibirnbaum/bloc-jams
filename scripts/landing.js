@@ -14,12 +14,12 @@ var animatePoints = function (){
 
 $(window).load (function () {
     // if window is big enough to display top of selling points container = NO SCROLL EVENT REQUIRED    
-    if ($(window).height > 950) {
+    if ($(window).height() > 950) {
         animatePoints();
     }
     
     //  if window doesn't display top of selling points container = YES SCROLL EVENT REQUIRED
-    var scrollDistance = $(".selling-points").offset().top - $(window).height + 200;
+    var scrollDistance = $(".selling-points").offset().top - $(window).height() + 200;
     $(window).scroll(function(event){
          if($(window).scrollTop() >= scrollDistance){
              animatePoints();

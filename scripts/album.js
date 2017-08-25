@@ -1,3 +1,4 @@
+/*global $*/
 // ALBUM DETAILS REPRESENTED AS AN OBJECT
 var albumPicasso = {
     title: 'The Colors',
@@ -40,30 +41,31 @@ var createSongRow = function (songNumber, songName, songLength) {
         +'</tr>'
         ;
     
-    return template;
+    return $(template);
 };
 
 // take in all the info from an album object and inject it into the html - including createing the song row html and injecting its info
 var setCurrentAlbum = function (album) {
     // select all the html elements we will want to change
-    var albumTitle = document.getElementsByClassName("album-view-title")[0];
-    var albumArtist = document.getElementsByClassName("album-view-artist")[0];
-    var albumReleaseInfo = document.getElementsByClassName("album-view-release-info")[0];
-    var albumImage = document.getElementsByClassName("album-cover-art")[0]; 
-    var albumSongList = document.getElementsByClassName("album-view-song-list")[0];
+    var $albumTitle = $(".album-view-title");
+    var $albumArtist = $(".album-view-artist");
+    var $albumReleaseInfo = $(".album-view-release-info");
+    var $albumImage = $(".album-cover-art"); 
+    var $albumSongList = $(".album-view-song-list");
     
     // make the changes to those html elements
-    albumTitle.firstChild.nodeValue = album.title;
-    albumArtist.firstChild.nodeValue = album.artist;
-    albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
-    albumImage.setAttribute('src', album.albumArtUrl);
+    $albumTitle.text(album.title);
+    $albumArtist.text(album.artist);
+    $albumReleaseInfo.text(album.year + ' ' + album.label);
+    $albumImage.attr('src', album.albumArtUrl);
     
     // make sure the table which holds the songs and their info is empty
-    albumSongList.innerHTML = "";
+    $albumSongList.empty();
     
     // create the song row html and insert its info
     for (var i=0; i<album.songs.length; i++) {
-    albumSongList.innerHTML = albumSongList.innerHTML + createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
+        var $newRow = createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
+        $albumSongList.append($newRow);
     }
 };
 

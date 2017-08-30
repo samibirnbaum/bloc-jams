@@ -1,36 +1,4 @@
 /*global $*/
-// ALBUM DETAILS REPRESENTED AS AN OBJECT
-var albumPicasso = {
-    title: 'The Colors',
-    artist: 'Pablo Picasso',
-    label: 'Cubism',
-    year: '1881',
-    albumArtUrl: 'assets/images/album_covers/01.png',
-    // songs stored in an array where each one is its own object
-    songs: [
-        { title: 'Blue', duration: '4:26' },
-        { title: 'Green', duration: '3:14' },
-        { title: 'Red', duration: '5:01' },
-        { title: 'Pink', duration: '3:21'},
-        { title: 'Magenta', duration: '2:15'}
-    ]
-};
-
-var albumMarconi = {
-    title: 'The Telephone',
-    artist: 'Guglielmo Marconi',
-    label: 'EM',
-    year: '1909',
-    albumArtUrl: 'assets/images/album_covers/20.png',
-    songs: [
-        { title: 'Hello, Operator?', duration: '1:01' },
-        { title: 'Ring, ring, ring', duration: '5:01' },
-        { title: 'Fits in your pocket', duration: '3:21'},
-        { title: 'Can you hear me now?', duration: '3:14' },
-        { title: 'Wrong phone number', duration: '2:15'}
-    ]
-};
-
 
 //*****FUNCTIONS TO CREATE WHOLE ALBUM ON THE PAGE********//
 
@@ -53,26 +21,29 @@ var createSongRow = function (songNumber, songName, songLength) {
         
         // 3 SCENARIOS//
         //if song is not playing
-        if(currentPlayingSong === null){
+        if(currentPlayingSongNumber === null){
             //change play to pause
             $songNumberCell.html(pauseButtonTemplate);
-            currentPlayingSong = $songNumber;
+            currentPlayingSongNumber = $songNumber;
+            currentSongFromAlbum = currentAlbum.songs[$songNumber-1];
         }    
         
         //if song is playing
-        else if($songNumber === currentPlayingSong){
+        else if($songNumber === currentPlayingSongNumber){
             //change pause to play
             $songNumberCell.html(playButtonTemplate); //turning song off       //when song turned off (this second play), click/hover off not being heard 
-            currentPlayingSong = null;
+            currentPlayingSongNumber = null;
+            currentSongFromAlbum = null;
         }    
         
         //if another song is playing
-        else if ($songNumber !== currentPlayingSong){
+        else if ($songNumber !== currentPlayingSongNumber){
             //change that song back to its number
-            $('[data-song-number="'+currentPlayingSong+'"]').html(currentPlayingSong);
+            $('[data-song-number="'+currentPlayingSongNumber+'"]').html(currentPlayingSongNumber);
             //and change mine to pause
             $songNumberCell.html(pauseButtonTemplate);                                  
-            currentPlayingSong = $songNumber;
+            currentPlayingSongNumber = $songNumber;
+            currentSongFromAlbum = currentAlbum.songs[$songNumber-1]; 
         }
     };
     
@@ -81,7 +52,7 @@ var createSongRow = function (songNumber, songName, songLength) {
         var $songNumberCell = $(this).find(".song-item-number");
         var $songNumber = $songNumberCell.attr("data-song-number");
          
-        if($songNumber !== currentPlayingSong){
+        if($songNumber !== currentPlayingSongNumber){
             $songNumberCell.html(playButtonTemplate);
         }
     };
@@ -91,7 +62,7 @@ var createSongRow = function (songNumber, songName, songLength) {
         var $songNumberCell = $(this).find(".song-item-number");
         var $songNumber = $songNumberCell.attr("data-song-number");
         
-        if($songNumber !== currentPlayingSong){  
+        if($songNumber !== currentPlayingSongNumber){  
             $songNumberCell.html($songNumber);
         }    
     };
@@ -106,6 +77,7 @@ var createSongRow = function (songNumber, songName, songLength) {
 
 // The whole album and songrows
 var setCurrentAlbum = function (album) {
+    currentAlbum = album;
     // select all the html elements we will want to change
     var $albumTitle = $(".album-view-title");
     var $albumArtist = $(".album-view-artist");
@@ -133,10 +105,15 @@ var setCurrentAlbum = function (album) {
 //variables used in album creation functions
 var playButtonTemplate = '<a class="album-song-button"><span class="ion-play"></span></a>';
 var pauseButtonTemplate = '<a class="album-song-button"><span class="ion-pause"></span></a>';
-var currentPlayingSong = null;
 
 
-//****CALLING THE FUNCTION EXPRESSIONS WHICH CREATE OUT WHOLE ALBUM ON THE PAGE*****//
+//Tracking currenlty playing song
+var currentAlbum = null; //holds album object
+var currentPlayingSongNumber = null; //holds song number from html5 data attr
+var currentSongFromAlbum = null; //holds song object from songs array in album object
+
+
+//****CALLING THE FUNCTION EXPRESSIONS WHICH CREATE OUR WHOLE ALBUM ON THE PAGE*****//
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
 });

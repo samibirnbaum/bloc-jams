@@ -26,6 +26,7 @@ var createSongRow = function (songNumber, songName, songLength) {
             $songNumberCell.html(pauseButtonTemplate);
             currentPlayingSongNumber = $songNumber;
             currentSongFromAlbum = currentAlbum.songs[$songNumber-1];
+            updatePlayerBarSong();
         }    
         
         //if song is playing
@@ -34,6 +35,7 @@ var createSongRow = function (songNumber, songName, songLength) {
             $songNumberCell.html(playButtonTemplate); //turning song off       //when song turned off (this second play), click/hover off not being heard 
             currentPlayingSongNumber = null;
             currentSongFromAlbum = null;
+            updatePlayerBarSong();
         }    
         
         //if another song is playing
@@ -44,6 +46,7 @@ var createSongRow = function (songNumber, songName, songLength) {
             $songNumberCell.html(pauseButtonTemplate);                                  
             currentPlayingSongNumber = $songNumber;
             currentSongFromAlbum = currentAlbum.songs[$songNumber-1]; 
+            updatePlayerBarSong();
         }
     };
     
@@ -98,6 +101,23 @@ var setCurrentAlbum = function (album) {
     for (var i=0; i<album.songs.length; i++) {
         var $newRow = createSongRow(i+1, album.songs[i].title, album.songs[i].duration);
         $albumSongList.append($newRow);
+    }
+};
+
+
+
+//*********PLAYER BAR UPDATE FUNCTION WITH EVENT LISTENERS********//
+
+var updatePlayerBarSong = function() {
+    if (currentPlayingSongNumber === null){
+        $(".song-name").empty();
+        $(".artist-name").empty();
+        $(".artist-song-mobile").empty();
+    
+    }else{
+        $(".song-name").html(currentSongFromAlbum.title);
+        $(".artist-name").html(currentAlbum.artist);
+        $(".artist-song-mobile").html(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     }
 };
 

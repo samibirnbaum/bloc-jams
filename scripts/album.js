@@ -125,44 +125,32 @@ var updatePlayerBarSong = function() {
         $(".main-controls .play-pause").html(playerBarPauseButton);
 };
 
-var nextSong = function(){
-    if (currentPlayingSongNumber !== null) {
+var skipSong = function() {
+    var previousSongIndex = trackIndex(currentAlbum, currentSongFromAlbum);
+    var previousSongNumber = currentPlayingSongNumber;
     
-        var previousSongIndex = trackIndex(currentAlbum, currentSongFromAlbum); //song in array that was playing
-        var previousSongNumber = currentPlayingSongNumber; //song number html attr that was playing
-    
+    if (event.target.className === "ion-skip-backward"){
+        var currentSongIndex = previousSongIndex-1; //song index playing now
+        //reset song index back to top of array
+        if (currentSongIndex === -1){
+            currentSongIndex = currentAlbum.songs.length -1;
+        }
+    }else{
         var currentSongIndex = previousSongIndex+1; //song index playing now
         //reset song index back to bottom of array
         if (currentSongIndex === currentAlbum.songs.length){
             currentSongIndex = 0;
         }
-        currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-        currentPlayingSongNumber = currentSongIndex + 1;
-    
-        updatePlayerBarSong();
-        getSongNumberCell(previousSongNumber).html(previousSongNumber);
-        getSongNumberCell(currentPlayingSongNumber).html(pauseButtonTemplate);
     }
-};
-
-
-var previousSong = function() {
-    var previousSongIndex = trackIndex(currentAlbum, currentSongFromAlbum); //song in array that was playing
-    var previousSongNumber = currentPlayingSongNumber; // song number that was playing stored in that global variable
     
-    var currentSongIndex = previousSongIndex-1; //song index playing now
-    //reset song index back to top of array
-    if (currentSongIndex === -1){
-        currentSongIndex = currentAlbum.songs.length -1;
-    }
     currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-    currentPlayingSongNumber = currentSongIndex+1;    
-    
+    currentPlayingSongNumber = currentSongIndex+1;
+
     updatePlayerBarSong();
     getSongNumberCell(previousSongNumber).html(previousSongNumber);
     getSongNumberCell(currentPlayingSongNumber).html(pauseButtonTemplate);
+    
 };
-
 
 
 
@@ -206,8 +194,8 @@ var currentSongFromAlbum = null; //holds song object from songs array in album o
 //****CALLING THE FUNCTION EXPRESSIONS WHICH CREATE OUR WHOLE ALBUM ON THE PAGE*****//
 $(document).ready(function() {
     setCurrentAlbum(albumPicasso);
-    $nextButton.click(nextSong)
-    $previousButton.click(previousSong);
+    $nextButton.click(skipSong);
+    $previousButton.click(skipSong);
 });
 
 

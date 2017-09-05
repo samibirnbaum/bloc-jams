@@ -29,16 +29,21 @@ var createSongRow = function (songNumber, songName, songLength) {
             $songNumberCell.html(pauseButtonTemplate);
             setSong(songNumber);
             updatePlayerBarSong();
+            currentSoundFile.play();
         }    
         
-        //if song is playing
+        //if song is playing - pause/play
         else if(songNumber === currentPlayingSongNumber){
-            //change pause to play
-            $songNumberCell.html(playButtonTemplate); //turning song off       //when song turned off (this second play), click/hover off not being heard 
-            currentPlayingSongNumber = null;
-            currentSongFromAlbum = null;
-            $(".main-controls .play-pause").html(playerBarPlayButton);
-        }    
+            if (currentSoundFile.isPaused()) {
+                $songNumberCell.html(pauseButtonTemplate);
+                $(".main-controls .play-pause").html(playerBarPauseButton);
+                currentSoundFile.play() 
+            }else{
+                $songNumberCell.html(playButtonTemplate);
+                $(".main-controls .play-pause").html(playerBarPlayButton);
+                currentSoundFile.pause();
+            }
+        }   
         
         //if another song is playing
         else if (songNumber !== currentPlayingSongNumber){
@@ -48,7 +53,9 @@ var createSongRow = function (songNumber, songName, songLength) {
             $songNumberCell.html(pauseButtonTemplate);                                  
             setSong(songNumber);
             updatePlayerBarSong();
+            currentSoundFile.play();
         }
+        console.log(currentSoundFile);
     };
     
     var onHover = function (event) {
@@ -136,9 +143,10 @@ var nextSong = function(){
         if (currentSongIndex === currentAlbum.songs.length){
             currentSongIndex = 0;
         }
-        currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-        currentPlayingSongNumber = currentSongIndex + 1;
+        
+        setSong(currentSongIndex+1);
     
+        currentSoundFile.play();
         updatePlayerBarSong();
         getSongNumberCell(previousSongNumber).html(previousSongNumber);
         getSongNumberCell(currentPlayingSongNumber).html(pauseButtonTemplate);
@@ -155,9 +163,10 @@ var previousSong = function() {
     if (currentSongIndex === -1){
         currentSongIndex = currentAlbum.songs.length -1;
     }
-    currentSongFromAlbum = currentAlbum.songs[currentSongIndex];
-    currentPlayingSongNumber = currentSongIndex+1;    
     
+    setSong(currentSongIndex+1);
+    
+    currentSoundFile.play();
     updatePlayerBarSong();
     getSongNumberCell(previousSongNumber).html(previousSongNumber);
     getSongNumberCell(currentPlayingSongNumber).html(pauseButtonTemplate);
@@ -173,13 +182,34 @@ var previousSong = function() {
 // ********************************************************
 
 //More Generic Functions
+
+//sets the song number/array/audio file + sets volume
 var setSong = function (songNumber) {
-  currentPlayingSongNumber = parseInt(songNumber);
-  currentSongFromAlbum = currentAlbum.songs[songNumber-1];
+    //if a song is playing stop it first
+    if (currentSoundFile) {
+        currentSoundFile.stop();
+    }
+        
+    currentPlayingSongNumber = parseInt(songNumber);
+    currentSongFromAlbum = currentAlbum.songs[songNumber-1];
+  
+    //sets the current sound file - which is presented as an object to work with
+    currentSoundFile = new buzz.sound(currentSongFromAlbum.audioUrl, {
+        formats: ["mp3"],
+        preload: true
+    });
+    
+    setVolume(currentVolume);
+};
+
+var setVolume = function (volume) {
+    if(currentSoundFile){
+        currentSoundFile.setVolume(volume);
+    }    
 };
 
 var getSongNumberCell = function (number) {
-    return $('.song-item-number[data-song-number="'+number+'"]')
+    return $('.song-item-number[data-song-number="'+number+'"]');
 };
 
 var trackIndex = function(album, song) {
@@ -200,6 +230,8 @@ var $previousButton =$(".main-controls .previous");
 var currentAlbum = null; //holds album object
 var currentPlayingSongNumber = null; //holds song number from html5 data attr
 var currentSongFromAlbum = null; //holds song object from songs array in album object
+var currentSoundFile = null; //holds the buzz sound object that is currently playing
+var currentVolume = 80;
 
 
 
